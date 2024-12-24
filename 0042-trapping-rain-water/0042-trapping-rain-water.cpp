@@ -1,35 +1,23 @@
 class Solution {
 public:
-    int trap(vector<int>& height) {
-       int n = height.size();
-       // prev greatest elemnt array
-       int prev[n];
-       prev[0]=-1;
-       int max= height[0];
-       for(int i =1;i<n;i++){
-        prev[i]=max;
-        if(max<height[i]) max=height[i];
-       }
-       // next greatest elemnts array
-       int next[n];
-       next[n-1]=-1;
-       max= height[n-1];
-       for(int i = n-2;i>=0;i--){
-        next[i]=max;
-        if(max<height[i]) max= height[i];
-       }
-       //minimum array
-       int mini[n];
-       for(int i = 0; i<n;i++){
-        mini[i]=min(prev[i],next[i]);
-       }
-       //calculate water
-       int water =0;
-       for(int i =0;i<n-1;i++){
-        if(height[i]<mini[i]){
-            water += (mini[i]-height[i]);
+    int trap(vector<int>& arr) {
+        int n = arr.size();
+        int lmax=0,rmax =0,total =0;
+        int l =0,r=n-1;
+        while(l<r){
+            if(arr[l]<=arr[r]){
+                if(lmax > arr[l]){
+                    total += lmax-arr[l];
+                }
+                else lmax=arr[l];
+                l=l+1;
+            }
+            else {
+                if(rmax>arr[r]) total += rmax-arr[r];
+                else rmax = arr[r];
+                r=r-1;
+            }
         }
-       }
-       return water;
+        return total;
     }
 };
